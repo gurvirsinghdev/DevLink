@@ -1,7 +1,10 @@
+import { Route, Routes } from "react-router";
+import Auth from "./pages/Auth.tsx";
+
 export default function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl px-3 py-4 underline">Hello world!</h1>
-    </div>
-  )
+    <Routes>
+      <Route path="/auth/*" element={<Auth />} />
+    </Routes>
+  );
 }

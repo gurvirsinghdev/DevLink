@@ -6,6 +6,7 @@ import { generateToken } from "../utils/generateToken.js";
 import { validateReqBody } from "../services/auth.services.js";
 
 export const register = async (req, res) => {
+  console.log(req.body);
   try {
     const { name, email, password } = req.body;
 
@@ -45,10 +46,14 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  console.log(req.body);
+
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
+    console.log(user);
+    console.log(await bcrypt.compare(password, user.password));
 
     if (user && (await bcrypt.compare(password, user.password))) {
       generateToken(res, user._id);
@@ -60,6 +65,7 @@ export const login = async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
