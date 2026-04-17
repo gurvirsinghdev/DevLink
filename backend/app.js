@@ -4,23 +4,25 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDb } from "./config/db.js";
 
+import authRoutes from "./routes/auth.routes.js";
+
 dotenv.config();
 const app = express();
 
 // middlewares
 app.use(
   cors({
-    origin: "localhost:5173",
-    credentials: true,
+    origin: "http://localhost:5173",
   }),
 );
 app.use(cookieParser());
+app.use(express.json());
 
 const PORT = process.env.PORT;
 
-app.get("/", (req, res) => {
-  res.send(`You're on root`);
-});
+// ROUTES
+
+app.use("/api/auth", authRoutes);
 
 connectDb().then((res) => {
   app.listen(PORT, () => {
