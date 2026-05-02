@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,18 +23,34 @@ export default function AuthForm() {
         .post("/auth/login", { email, password })
         .then((res) => {
           console.log(res);
+          setData({ ...data, email: "", password: "" });
+          toast.success(
+            res.data.message || "Logged in successfully! Welcome back.",
+          );
         })
         .catch((err) => {
           console.log(err);
+          toast.error(
+            err.response.data.message ||
+              "Login failed! Please check your credentials.",
+          );
         });
     } else {
       axiosInstance
         .post(`/auth/register`, data)
         .then((res) => {
           console.log(res);
+          setData({ ...data, name: "", email: "", password: "" });
+          toast.success(
+            res.data.message || "Registered successfully! Please login.",
+          );
         })
         .catch((err) => {
           console.log(err);
+          toast.error(
+            err.response.data.message ||
+              "Registration failed! Please try again.",
+          );
         });
     }
   };
